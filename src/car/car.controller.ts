@@ -1,7 +1,6 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { CarService } from './car.service';
 import { Car } from 'src/interfaces/car.interface';
-import { SourceTextModule } from 'vm';
 
 @Controller('car')
 export class CarController {
@@ -14,9 +13,9 @@ export class CarController {
   getAllCars(): Car[] {
     return this.carService.getAllCars()
   }
-
+  
   @Get(':id')
-  getById(@Param('id', ParseIntPipe) id: number) {
+  getById(@Param('id') id: string) {
     const car: Car = this.carService.getCarById(id)
     if (!car) {
       throw new NotFoundException(`Car with id ${id} not found`)
@@ -31,12 +30,12 @@ export class CarController {
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() car: Car) {
+  update(@Param('id') id: string, @Body() car: Car) {
     return this.carService.update(id, car)
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(@Param('id') id: string) {
     this.carService.delete(id)
   }
 }
