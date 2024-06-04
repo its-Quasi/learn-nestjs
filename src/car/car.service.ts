@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { targetModulesByContainer } from '@nestjs/core/router/router-module';
 import { Car } from 'src/interfaces/car.interface';
 
 @Injectable()
@@ -21,7 +22,26 @@ export class CarService {
     return this.carRepo
   }
 
-  public getCarById(id: number): Car {
+  public getCarById(id: number): Car | undefined {
     return this.carRepo.find(e => e.id === id)
+  }
+
+  public create(car: Car) {
+    this.carRepo.push({
+      id: this.carRepo.length + 1,
+      ...car
+    })
+    return this.carRepo.at(-1)
+  }
+
+  public update(id: number, car: Car) {
+    console.log(id, car)
+    const index = this.carRepo.findIndex(e => e.id === id)
+    this.carRepo[index] = {id, ...car}
+  }
+
+  public delete(id: number) {
+    const index = this.carRepo.findIndex(e => e.id === id)
+    this.carRepo.splice(index,1)
   }
 }
