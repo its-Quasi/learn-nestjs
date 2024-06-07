@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Car } from 'src/interfaces/car.interface';
 import { v4 as uuid } from 'uuid'
+import { CreateCarDto } from './dto/create-car.dto';
 
 @Injectable()
 export class CarService {
 
   private carRepo: Car[] = [
-    { id: uuid(), brand: "Toyota" },
-    { id: uuid(), brand: "Cadillac" },
-    { id: uuid(), brand: "Aston Martin" }
+    { id: uuid(), brand: "Toyota", model: '1' },
+    { id: uuid(), brand: "Cadillac", model: '1' },
+    { id: uuid(), brand: "Aston Martin", model: '1' }
   ]
 
   public getAllCars(): Car[] {
@@ -19,9 +20,9 @@ export class CarService {
     return this.carRepo.find(e => e.id === id)
   }
 
-  public create(car: Car) {
+  public create(car: CreateCarDto) {
     this.carRepo.push({
-      id: this.carRepo.length + 1,
+      id: uuid(),
       ...car
     })
     return this.carRepo.at(-1)
