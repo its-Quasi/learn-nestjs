@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Car } from 'src/interfaces/car.interface';
 import { v4 as uuid } from 'uuid'
-import { CreateCarDto } from './dto/create-car.dto';
+import { CreateCarDto, UpdateCarDto } from './dto';
 
 @Injectable()
 export class CarService {
@@ -20,22 +20,23 @@ export class CarService {
     return this.carRepo.find(e => e.id === id)
   }
 
-  public create(car: CreateCarDto) {
-    this.carRepo.push({
+  public create(carDto: CreateCarDto) {
+    const car: Car = {
       id: uuid(),
-      ...car
-    })
+      ...carDto
+    }
+    this.carRepo.push(car)
     return this.carRepo.at(-1)
   }
 
-  public update(id: string, car: Car) {
-    console.log(id, car)
+  public update(id: string, updateCarDto: UpdateCarDto) {
     const index = this.carRepo.findIndex(e => e.id === id)
-    this.carRepo[index] = { id, ...car }
+    this.carRepo[index] = { ...updateCarDto, id }
   }
 
   public delete(id: string) {
     const index = this.carRepo.findIndex(e => e.id === id)
+    if(index === -1) throw new NotFoundException(`The car with ID: ${id} not found`)
     this.carRepo.splice(index, 1)
   }
 }

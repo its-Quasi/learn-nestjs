@@ -11,7 +11,7 @@ export class CarController {
   }
 
   @Get()
-  getAllCars(): Car[] { //TODO: Change by DTO
+  getAllCars(): Car[] {
     return this.carService.getAllCars()
   }
   
@@ -25,7 +25,6 @@ export class CarController {
   }
 
   @Post()
-  @UsePipes(ValidationPipe)
   create(@Body() car: CreateCarDto) {
     console.log(car)
     return this.carService.create(car)
