@@ -11,7 +11,7 @@ export class CarController {
   }
 
   @Get()
-  getAllCars(): Car[] {
+  getAllCars(): Car[] { //TODO: Change by DTO
     return this.carService.getAllCars()
   }
   
